@@ -3,9 +3,8 @@
 #include <cstdlib>
 #include <iostream>
 
-BalloonsGenerator::BalloonsGenerator(int balloon_count, int width, int height)
-    : m_balloon_count(balloon_count),
-      m_width(width),
+BalloonsGenerator::BalloonsGenerator(int width, int height)
+    : m_width(width),
       m_height(height)
 {
     m_idx = 0;

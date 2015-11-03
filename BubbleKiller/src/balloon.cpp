@@ -47,8 +47,3 @@ int Balloon::y() const
 {
     return m_center_point.second;
 }
-
-void Balloon::print() const
-{
-    std::cout << m_center_point.first << " " << m_center_point.second << " " << m_speed << " " << m_coefficient << " " << m_radius << std::endl;
-}

@@ -4,6 +4,7 @@ QT -= gui
 TARGET = BubbleKiller
 CONFIG += console
 CONFIG -= app_bundle
+CONFIG += c++11
 
 TEMPLATE = app
 
@@ -28,7 +29,11 @@ LIBS += -L/usr/local/lib \
 
 SOURCES += \
     src/main.cpp \
-    src/balloons_generator.cpp
+    src/balloons_generator.cpp \
+    src/balloon.cpp \
+    src/game.cpp
 
 HEADERS += \
-    include/balloons_generator.hpp
+    include/balloons_generator.hpp \
+    include/balloon.hpp \
+    include/game.hpp

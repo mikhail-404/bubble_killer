@@ -2,6 +2,7 @@
 #define GAME_HPP
 
 #include <vector>
+#include <list>
 #include <memory>
 
 #include <opencv2/core/core.hpp>
@@ -19,11 +20,10 @@ public:
     ~Game();
     void start_game();
 
-
 private:
     cv::Mat                m_frame;
     int                    m_balloon_count;
-    std::vector <Balloon*> m_balloons;
+    std::list <Balloon*>   m_balloons;
     BalloonsGenerator      *m_generator;
 };
 

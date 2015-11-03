@@ -19,16 +19,23 @@ LIBS += -L/usr/local/lib \
 -lopencv_ml \
 -lopencv_video \
 -lopencv_imgcodecs \
+-lopencv_videoio \
 -lopencv_features2d \
 -lopencv_calib3d \
 -lopencv_objdetect \
--lopencv_contrib \
--lopencv_legacy \
 -lopencv_flann \
 
 SOURCES += \
     src/main.cpp \
-    src/balloons_generator.cpp
+    src/balloons_generator.cpp \
+    src/hand_detector.cpp \
+    src/webcam_image.cpp \
+    src/imageop.cpp \
+    src/rect.cpp
 
 HEADERS += \
-    include/balloons_generator.hpp
+    include/balloons_generator.hpp \
+    include/hand_detector.hpp \
+    include/webcam_image.hpp \
+    include/imageop.hpp \
+    include/rect.hpp

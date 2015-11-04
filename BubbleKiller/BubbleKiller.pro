@@ -4,6 +4,7 @@ QT -= gui
 TARGET = BubbleKiller
 CONFIG += console
 CONFIG -= app_bundle
+CONFIG += c++11
 
 TEMPLATE = app
 
@@ -28,6 +29,8 @@ LIBS += -L/usr/local/lib \
 SOURCES += \
     src/main.cpp \
     src/balloons_generator.cpp \
+    src/game.cpp \
+    src/balloon.cpp \
     src/hand_detector.cpp \
     src/webcam_image.cpp \
     src/imageop.cpp \
@@ -37,6 +40,8 @@ SOURCES += \
 HEADERS += \
     include/balloons_generator.hpp \
     include/hand_detector.hpp \
+    include/balloon.hpp \
+    include/game.hpp \
     include/webcam_image.hpp \
     include/imageop.hpp \
     include/rect.hpp \

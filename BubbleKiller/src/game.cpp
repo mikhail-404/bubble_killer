@@ -3,6 +3,7 @@
 
 #include <thread>
 #include <chrono>
+#include <ctime>
 
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/objdetect/objdetect.hpp"
@@ -22,9 +23,7 @@ Game::Game(int balloon_counts)
     m_generator = new BalloonsGenerator(width, height);
 
     for(int i = 0; i < m_balloon_count; ++i)
-    {
         m_balloons.push_back(m_generator->next_balloon());
-    }
 }
 
 Game::~Game()
@@ -34,29 +33,32 @@ Game::~Game()
     delete m_generator;
 }
 
-void Game::updateBalloons(std::vector<Balloon> balloons) {
-    for (Balloon balloon : balloons) {
+void Game::updateBalloons(std::vector<Balloon> balloons)
+{
+    for(Balloon balloon : balloons)
         m_balloons.push_back(&balloon);
-    }
 }
 
-void Game::setScores(vector<User>& scores) {
+void Game::setScores(vector<User>& scores)
+{
     m_scores = scores;
 }
 
-double euclideanDist(Point& p, Point& q)
+double distance(Point& p, Point& q)
 {
     Point diff = p - q;
-    return cv::sqrt(diff.x*diff.x + diff.y*diff.y);
+    return cv::sqrt(diff.x * diff.x + diff.y * diff.y);
 }
 
-string toString(User user) {
+string toString(User user)
+{
     stringstream ss;
     ss << "Id: " << user.id << ", score: " << user.score;
     return ss.str();
 }
 
-void Game::printScores(const cv::Mat& src) {
+void Game::printScores(const cv::Mat& src)
+{
     Scalar fColor(0, 255, 0);
     int xpos = src.cols / 1.5;
     int ypos = src.rows / 1.4;
@@ -64,7 +66,8 @@ void Game::printScores(const cv::Mat& src) {
     int lineChange = 30;
     int fontFace = FONT_HERSHEY_PLAIN;
     int thickness = 2;
-    for (int i = 0; i < m_scores.size(); i++) {
+    for (int i = 0; i < m_scores.size(); i++)
+    {
         string info = toString(m_scores[i]);
         putText(src, info, Point(ypos,xpos), fontFace, fontSize, fColor, thickness);
         xpos -= lineChange;
@@ -73,7 +76,7 @@ void Game::printScores(const cv::Mat& src) {
 
 void Game::start_game()
 {
-    WebcamImage m(1, width, height);
+    WebcamImage m(0, width, height);
     m.cap >> m.src;
     cv::Size size = m.src.size();
     int y = size.height;
@@ -91,21 +94,14 @@ void Game::start_game()
 
     while (true)
     {
-        //std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        //temp = m_frame.clone();
-        ///
         DetectorResult result = detector.processFrame();
-        //cout << result.recognized << " " << result.pos << endl;
         cv::Point finger_pos = result.pos;
-        //cout << result.pos << endl;
 
         for(auto it = m_balloons.begin(); it != m_balloons.end(); )
         {
             Balloon *b = *it;
-            // remove balls if condition
-            //if (cv::norm(finger_pos, cv::Point(b->x(), b->y())) <= b->radius())
             cv::Point p(b->x(), b->y());
-            if (euclideanDist(finger_pos, p) <= b->radius())
+            if (distance(finger_pos, p) <= b->radius())
             {
                 int radius = b->radius() * 1.5;
                 while (radius)
@@ -116,14 +112,13 @@ void Game::start_game()
                 auto next_iter = it;
                 ++next_iter;
                 m_balloons.erase(it);
-                if (b->balloon_type() == Balloon::BOMB) {
-                    user.score -= 2;
-                } else {
-                    user.score++;
-                }
+
+                // score counting
+                user.score += (b->balloon_type() == Balloon::BOMB) ? -2 : 1;
                 vector<User> scores;
                 scores.push_back(user);
                 setScores(scores);
+                //
                 delete b;
                 it = next_iter;
                 m_balloons.push_back(m_generator->next_balloon());
@@ -138,7 +133,6 @@ void Game::start_game()
             b->check_position(y);
             ++it;
         }
-
         printScores(m.src);
         cv::imshow("Bubbles", m.src);
         cv::waitKey(10);

@@ -42,13 +42,11 @@ void ImageOp::calculatePalmColor(WebcamImage* m) {
         string imgText=string("Cover rectangles with palm");
         printText(m->src,imgText);
 
-        if(i==30){
-            //	imwrite("./images/waitforpalm1.jpg",m->src);
-        }
-
         imshow("Bubbles", m->src);
         //*out << m->src;
-        if(cv::waitKey(1) >= 0) break;
+        if(cv::waitKey(30) >= 0) {
+            break;
+        }
     }
     computeAverage(m);
     initTrackbars();
@@ -105,19 +103,19 @@ void ImageOp::computeAverage(WebcamImage *m) {
 }
 
 void ImageOp::initTrackbars() {
-    namedWindow("trackbars",CV_WINDOW_KEEPRATIO);
+    //namedWindow("trackbars",CV_WINDOW_KEEPRATIO);
     c_lower[0][0]=12;
     c_upper[0][0]=7;
     c_lower[0][1]=30;
     c_upper[0][1]=40;
     c_lower[0][2]=80;
     c_upper[0][2]=80;
-    createTrackbar("lower1","trackbars",&c_lower[0][0],255);
+    /*createTrackbar("lower1","trackbars",&c_lower[0][0],255);
     createTrackbar("lower2","trackbars",&c_lower[0][1],255);
     createTrackbar("lower3","trackbars",&c_lower[0][2],255);
     createTrackbar("upper1","trackbars",&c_upper[0][0],255);
     createTrackbar("upper2","trackbars",&c_upper[0][1],255);
-    createTrackbar("upper3","trackbars",&c_upper[0][2],255);
+    createTrackbar("upper3","trackbars",&c_upper[0][2],255);*/
 }
 
 void ImageOp::normalizeColors() {

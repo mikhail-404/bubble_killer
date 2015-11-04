@@ -21,7 +21,7 @@ public:
     //
     int radius() const;
     //
-    void check_position(const int &pos);
+    bool check_position(const int &pos);
     //
     int x() const;
     //
@@ -29,20 +29,15 @@ public:
     //
     BALLOON_TYPE balloon_type() const;
     //
-    bool is_bang() const;
-    //
-    void print() const;
-    //
     std::tuple <int, int, int> color() const;
     //
 
 private:
     int                        m_id;
-    Position                   m_start_position;
+    Position                   m_center_point;
     double                     m_coefficient;
     double                     m_speed;
     int                        m_radius;
-    Position                   m_center_point;
     std::tuple <int, int, int> m_color;
     BALLOON_TYPE               m_balloon_type;
 };

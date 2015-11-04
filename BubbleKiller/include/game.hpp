@@ -21,6 +21,8 @@ struct User {
 class Game
 {
 public:
+    const int width = 640;
+    const int height = 480;
     Game(int balloon_counts);
     ~Game();
     void start_game();
@@ -33,7 +35,7 @@ private:
     int                    m_balloon_count;
     std::list <Balloon*>   m_balloons;
     BalloonsGenerator      *m_generator;
-    std::vector<User> m_scores;
+    std::vector<User>      m_scores;
 };
 
 #endif // GAME_HPP

@@ -12,12 +12,13 @@ using namespace cv;
 class CascadeDetector {
 public:
     CascadeDetector();
+    void detectAndDraw(Mat& image);
 
 private:
     CascadeClassifier cascade;
     CascadeClassifier nestedCascade;
     const String cascadeName = "/home/kirill/aGest.xml";
-    const String cascadeName2 = "/home/kirill/hand.xml";
+    const String cascadeName2 = "/home/kirill/haarcascade.xml";
 };
 
 #endif // CASCADE_DETECTOR_HPP

@@ -10,10 +10,9 @@ CascadeDetector::CascadeDetector()
     nestedCascade.load(cascadeName2);
 }
 
-void detectAndDraw( Mat& img,
-                    CascadeClassifier& cascade, CascadeClassifier& nestedCascade,
-                    double scale)
+void CascadeDetector::detectAndDraw(Mat& img)
 {
+    double scale = 1;
     int i = 0;
     double t = 0;
     vector<Rect> faces;

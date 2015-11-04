@@ -12,18 +12,18 @@ using namespace cv;
 using namespace std;
 
 BorderedRect::BorderedRect() {
-	upper_corner=Point(0,0);
-	lower_corner=Point(0,0);
+    upperCorner = Point(0, 0);
+    lowerCorner = Point(0, 0);
 }
 
 BorderedRect::BorderedRect(Point u_corner, Point l_corner, Mat src) {
-	upper_corner=u_corner;
-	lower_corner=l_corner;
-    color = Scalar(0,255,0);
-	border_thickness=2;
-    roi_ptr = src(Rect(u_corner.x, u_corner.y, l_corner.x-u_corner.x, l_corner.y-u_corner.y));
+    upperCorner = u_corner;
+    lowerCorner = l_corner;
+    color = Scalar(0, 255, 0);
+    border_thickness = 2;
+    rect = src(Rect(u_corner.x, u_corner.y, l_corner.x-u_corner.x, l_corner.y-u_corner.y));
 }
 
 void BorderedRect::draw_rectangle(Mat src) {
-    rectangle(src, upper_corner, lower_corner, color, border_thickness);
+    rectangle(src, upperCorner, lowerCorner, color, border_thickness);
 }

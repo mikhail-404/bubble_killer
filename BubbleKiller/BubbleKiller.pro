@@ -5,6 +5,7 @@ TARGET = BubbleKiller
 CONFIG += console
 CONFIG -= app_bundle
 CONFIG += c++11
+CONFIG += -Wno-sign-compare
 
 TEMPLATE = app
 
@@ -33,9 +34,9 @@ SOURCES += \
     src/balloon.cpp \
     src/hand_detector.cpp \
     src/webcam_image.cpp \
-    src/imageop.cpp \
     src/rect.cpp \
-    src/cascade_detector.cpp
+    src/cascade_detector.cpp \
+    src/image_utils.cpp
 
 HEADERS += \
     include/balloons_generator.hpp \
@@ -43,6 +44,6 @@ HEADERS += \
     include/balloon.hpp \
     include/game.hpp \
     include/webcam_image.hpp \
-    include/imageop.hpp \
     include/rect.hpp \
-    include/cascade_detector.hpp
+    include/cascade_detector.hpp \
+    include/image_utils.hpp

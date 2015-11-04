@@ -35,7 +35,7 @@ private:
     int                    m_balloon_count;
     std::list <Balloon*>   m_balloons;
     BalloonsGenerator      *m_generator;
-    std::vector<User> m_scores;
+    std::vector<User>      m_scores;
 };
 
 #endif // GAME_HPP

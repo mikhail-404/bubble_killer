@@ -30,19 +30,19 @@ Game::~Game()
 void Game::start_game()
 {
     cv::Size size = m_frame.size();
-    int x = size.width;
     int y = size.height;
     cv::Mat temp;
 
     while (true)
     {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
         temp = m_frame.clone();
         for(auto it = m_balloons.begin(); it != m_balloons.end(); )
         {
             Balloon *b = *it;
             if (b->y() <= y / 2)
             {
-                int radius = b->radius() * 2;
+                int radius = b->radius() * 1.5;
                 while (radius)
                 {
                     cv::circle(temp, cv::Point(b->x() + 2. * std::sin(b->y() * 2.), b->y()), radius, cv::Scalar(0, 0, 255), 1, cv::LINE_AA);
@@ -55,7 +55,10 @@ void Game::start_game()
                 m_balloons.push_back(m_generator->next_balloon());
                 continue;
             }
-            cv::circle(temp, cv::Point(b->x() + 2. * std::sin(b->y() * 2.), b->y()), b->radius(), cv::Scalar(0, 255, 0), 2, cv::LINE_8);
+            if (b->balloon_type() == Balloon::BOMB)
+                cv::circle(temp, cv::Point(b->x() + 2. * std::sin(b->y() * 2.), b->y()), b->radius(), cv::Scalar(0, 0, 0), 2, cv::LINE_8);
+            else
+                cv::circle(temp, cv::Point(b->x() + 2. * std::sin(b->y() * 2.), b->y()), b->radius(), cv::Scalar(0, 255, 0), 2, cv::LINE_8);
             b->next_position();
             b->check_position(y);
             ++it;
@@ -65,4 +68,3 @@ void Game::start_game()
         cv::waitKey(1);
     }
 }
-

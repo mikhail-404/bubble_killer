@@ -27,6 +27,8 @@ public:
     //
     int y() const;
     //
+    BALLOON_TYPE balloon_type() const;
+    //
     void print() const;
 
 private:

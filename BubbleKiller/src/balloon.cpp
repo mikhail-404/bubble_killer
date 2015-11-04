@@ -47,3 +47,8 @@ int Balloon::y() const
 {
     return m_center_point.second;
 }
+
+Balloon::BALLOON_TYPE Balloon::balloon_type() const
+{
+    return m_balloon_type;
+}

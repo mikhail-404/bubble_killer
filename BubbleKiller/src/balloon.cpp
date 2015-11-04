@@ -38,11 +38,9 @@ int Balloon::radius() const
     return m_radius;
 }
 
-void Balloon::check_position(const int &pos)
+bool Balloon::check_position(const int &pos)
 {
-    // for cycle trace
-    if (m_center_point.second < 0)
-        m_center_point.second = pos;
+    return m_center_point.second >= 0;
     // if you don't want such a cycle then remove current object
 }
 

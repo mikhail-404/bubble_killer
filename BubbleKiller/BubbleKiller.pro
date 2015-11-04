@@ -26,14 +26,25 @@ LIBS += -L/usr/local/lib \
 -lopencv_contrib \
 -lopencv_legacy \
 -lopencv_flann \
+-lopencv_videoio \
 
 SOURCES += \
     src/main.cpp \
     src/balloons_generator.cpp \
     src/balloon.cpp \
-    src/game.cpp
+    src/game.cpp \
+    src/imageop.cpp \
+    src/main1.cpp \
+    src/webcam_image.cpp \
+    src/rect.cpp \
+    src/hand_detector.cpp
 
 HEADERS += \
     include/balloons_generator.hpp \
     include/balloon.hpp \
-    include/game.hpp
+    include/game.hpp \
+    include/webcam_image.hpp \
+    include/rect.hpp \
+    include/imageop.hpp \
+    include/hand_detector.hpp \
+    src/game.cpp.autosave

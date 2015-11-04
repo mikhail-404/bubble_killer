@@ -7,7 +7,7 @@
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
-    Game game(10);
+    Game game(5);
     game.start_game();
     return a.exec();
 }

@@ -2,6 +2,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <iostream>
+#include <memory>
 
 BalloonsGenerator::BalloonsGenerator(int width, int height)
     : m_width(width),
@@ -15,7 +16,7 @@ Balloon* BalloonsGenerator::next_balloon()
     // sin coef: 1..10
     double rand_coef = 1.0 * (std::rand() % 11 + 1);
     // speed of trace: 10..30
-    double speed = 1.0 * (std::rand() % 21 + 10);
+    double speed = 0.25 * (std::rand() % 11 + 10);
     // radius of balloon: 15..45
     int radius = std::rand() % 31 + 15;
     // random start position: m_radius .. m_width - m_radius

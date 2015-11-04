@@ -1,5 +1,6 @@
 #include "balloon.hpp"
 #include <iostream>
+#include <utility>
 
 Balloon::Balloon(int id, Position start_position, double coef, double speed, int radius, Balloon::BALLOON_TYPE type)
     : m_id(id),
@@ -10,6 +11,9 @@ Balloon::Balloon(int id, Position start_position, double coef, double speed, int
       m_balloon_type(type),
       m_center_point(start_position)
 {
+    m_color = std::make_tuple(0, 255, 0);
+    if (m_balloon_type == BOMB)
+        m_color = std::make_tuple(0, 0, 0);
 }
 
 void Balloon::set_position(Position pos)
@@ -51,4 +55,19 @@ int Balloon::y() const
 Balloon::BALLOON_TYPE Balloon::balloon_type() const
 {
     return m_balloon_type;
+}
+
+void Balloon::print() const
+{
+    std::cout << m_id << std::endl;
+}
+
+bool Balloon::is_bang() const
+{
+    return false;
+}
+
+std::tuple <int, int, int> Balloon::color() const
+{
+    return m_color;
 }

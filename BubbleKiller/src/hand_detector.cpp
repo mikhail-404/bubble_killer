@@ -49,7 +49,7 @@ void HandDetector::showWindows() {
         channels.push_back(m->bw);
     merge(channels,result);
     result.copyTo( m->src(roi));
-    imshow("Bubbles",m->src);
+//    imshow("Bubbles",m->src);
 }
 
 DetectorResult HandDetector::getResult(vector<Point> contour) {

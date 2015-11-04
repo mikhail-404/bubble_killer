@@ -48,7 +48,7 @@ void ImageOp::calculatePalmColor(WebcamImage* m) {
 
         imshow("Bubbles", m->src);
         //*out << m->src;
-        if(cv::waitKey(30) >= 0) break;
+        if(cv::waitKey(1) >= 0) break;
     }
     computeAverage(m);
     initTrackbars();

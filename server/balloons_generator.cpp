@@ -10,7 +10,7 @@ BalloonsGenerator::BalloonsGenerator(int width, int height)
     m_idx = 0;
 }
 
-Balloon* BalloonsGenerator::next_balloon()
+Balloon BalloonsGenerator::next_balloon()
 {
     // sin coef: 1..10
     double rand_coef = 1.0 * (std::rand() % 11 + 1);
@@ -23,5 +23,5 @@ Balloon* BalloonsGenerator::next_balloon()
     //
     Position start_position = std::make_pair <int, int>(random_x_pos - 0, m_height - 0);
     //
-    return new Balloon(m_idx++, start_position, rand_coef, speed, radius, (rand() % 2 ? Balloon::NORMAL : Balloon::BOMB)); //position_center = (0,0)
+    return Balloon(m_idx++, start_position, rand_coef, speed, radius, (rand() % 2 ? Balloon::NORMAL : Balloon::BOMB)); //position_center = (0,0)
 }

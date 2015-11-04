@@ -25,7 +25,7 @@ void server::get_balloons(int num_ballooons)
 {
     for (int i = 0; i < num_ballooons; ++i)
     {
-        m_balloons.push_back(*m_gen.next_balloon());
+        m_balloons.push_back(m_gen.next_balloon());
     }
 }
 
@@ -92,7 +92,7 @@ void server::slotNewUser()
     out_id << user_id;
     sendToClient(socket, id);
 
-    update(false, socket);
+    update(true);
 }
 
 void server::sendToAllClient(const QByteArray &data)
@@ -132,11 +132,13 @@ void server::slotReadClient()
 
     while (socket->bytesAvailable())
     {
+        int size = m_balloons.size(); //я пытался
         QDataStream in(socket);
         int balloon_id = 0;
         in >> balloon_id;
         delete_balloon(balloon_id, socket);
-        get_balloons(1);
+        if (m_balloons.size() < size)
+            get_balloons(1);
 
         std::cout << "Delete balloon, id: " << balloon_id << std::endl;
 
@@ -147,6 +149,5 @@ void server::slotReadClient()
 void server::sendToClient(QTcpSocket *socket, const QByteArray &data)
 {
     socket->write(data);
-    socket->flush();
     std::cout << "Sended data" << std::endl;
 }

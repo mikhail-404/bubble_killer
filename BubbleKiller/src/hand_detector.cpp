@@ -20,7 +20,7 @@ HandDetector::HandDetector(WebcamImage* m, ImageOp *op) :
 	fontFace = FONT_HERSHEY_PLAIN;
 }
 
-void HandDetector::updateFrame() {
+DetectorResult HandDetector::updateFrame() {
     frameNumber++;
     m->cap >> m->src;
     flip(m->src,m->src,1);
@@ -29,9 +29,14 @@ void HandDetector::updateFrame() {
     cvtColor(m->srcLR, m->srcLR, CV_BGR2HLS);
     op->produceBinaries(m);
     cvtColor(m->srcLR, m->srcLR, CV_HLS2BGR);
-    makeContours(m);
+    int biggestContour = makeContours(m);
+    DetectorResult result = {false, Point()};
+    if (biggestContour != -1) {
+        result = getResult(contours[biggestContour]);
+    }
     getFingerNumber();
     showWindows();
+    return result;
 }
 
 void HandDetector::showWindows() {
@@ -47,12 +52,10 @@ void HandDetector::showWindows() {
     imshow("Bubbles",m->src);
 }
 
-DetectorResult HandDetector::getResult() {
-    Point finger;
-    if (fingerTips.size() > 0) {
-        finger = fingerTips[0];
-    }
-    return {isHand, fingerTips.size(), finger};
+DetectorResult HandDetector::getResult(vector<Point> contour) {
+    Point point = getMaxPoint(contour);
+    circle(m->src, point, 5, Scalar(255, 0, 0), 4);
+    return {true, point};
 }
 
 void HandDetector::initVectors() {
@@ -115,6 +118,19 @@ bool HandDetector::detectIfHand() {
 float HandDetector::distanceP2P(Point a, Point b){
 	float d= sqrt(fabs( pow(a.x-b.x,2) + pow(a.y-b.y,2) )) ;  
 	return d;
+}
+
+Point HandDetector::getMaxPoint(vector<Point> contour) {
+    int minY = 1000;
+    Point result;
+    for (int i = 0; i < contour.size(); i++) {
+        Point cur = contour[i];
+        if (cur.y < minY) {
+            minY = cur.y;
+            result = cur;
+        }
+    }
+    return result;
 }
 
 // remove fingertips that are too close to 
@@ -250,14 +266,14 @@ void HandDetector::checkForOneFinger(WebcamImage *m){
    	    Point v=(*d);
 		if(v.y<highestP.y){
 			highestP=v;
-			cout<<highestP.y<<endl;
+            //cout<<highestP.y<<endl;
 		}
 		d++;	
 	}int n=0;
 	d=hullP[cIdx].begin();
 	while( d!=hullP[cIdx].end() ) {
    	    Point v=(*d);
-			cout<<"x " << v.x << " y "<<  v.y << " highestpY " << highestP.y<< "ytol "<<yTol<<endl;
+            //cout<<"x " << v.x << " y "<<  v.y << " highestpY " << highestP.y<< "ytol "<<yTol<<endl;
 		if(v.y<highestP.y+yTol && v.y!=highestP.y && v.x!=highestP.x){
 			n++;
 		}
@@ -300,7 +316,7 @@ void HandDetector::getFingerTips(WebcamImage *m) {
 	}
 }
 
-void HandDetector::makeContours(WebcamImage *m) {
+int HandDetector::makeContours(WebcamImage *m) {
     Mat aBw;
     pyrUp(m->bw,m->bw);
     m->bw.copyTo(aBw);
@@ -317,13 +333,14 @@ void HandDetector::makeContours(WebcamImage *m) {
             eleminateDefects(m);
         }
         bool isHand= detectIfHand();
-        printGestureInfo(m->src);
+        //printGestureInfo(m->src);
         if(isHand) {
             getFingerTips(m);
-            drawFingerTips(m);
-            myDrawContours(m);
+            //drawFingerTips(m);
+            //myDrawContours(m);
         }
     }
+    return cIdx;
 }
 
 

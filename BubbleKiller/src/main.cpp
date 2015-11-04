@@ -8,6 +8,7 @@
 #include <QCoreApplication>
 
 #include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/objdetect/objdetect.hpp"
 #include "opencv2/imgproc/types_c.h"
 #include "opencv2/highgui/highgui_c.h"
 #include <opencv2/opencv.hpp>
@@ -26,17 +27,14 @@ void doMain() {
     WebcamImage m(0);
     ImageOp op;
     HandDetector detector(&m, &op);
+
     //out.open("out.avi", CV_FOURCC('M', 'J', 'P', 'G'), 15, m.src.size(), true);
     namedWindow("Bubbles", CV_WINDOW_FULLSCREEN);
     op.calculatePalmColor(&m);
     for(;;) {
-        detector.updateFrame();
-        DetectorResult result = detector.getResult();
-        cout << result.recognized << " " << result.numFingers <<
-             result.pos << endl;
-
+        DetectorResult result = detector.updateFrame();
+        cout << result.recognized << " " << result.pos << endl;
         //out << m.src;
-        //imwrite("./images/final_result.jpg",m.src);
         if (cv::waitKey(30) == char('q')) {
             break;
         }

@@ -5,6 +5,7 @@
 #include <string>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/opencv.hpp>
+#include <opencv2/core.hpp>
 #include "webcam_image.hpp"
 #include "imageop.hpp"
 
@@ -13,16 +14,15 @@ using namespace std;
 
 struct DetectorResult {
     bool recognized;
-    int numFingers;
-    Vec2i pos;
+    Point pos;
 };
 
 class HandDetector {
 public:
     HandDetector(WebcamImage* m, ImageOp *op);
-    void updateFrame();
+    DetectorResult updateFrame();
     void showWindows();
-    DetectorResult getResult();
+    DetectorResult getResult(vector<Point> contour);
 
 private:
     WebcamImage *m;
@@ -62,9 +62,10 @@ private:
     Scalar numberColor;
     int nrNoFinger;
     float distanceP2P(Point a,Point b);
+    Point getMaxPoint(vector<Point> contour);
     void removeRedundantEndPoints(vector<Vec4i> newDefects);
     void removeRedundantFingerTips();
-    void makeContours(WebcamImage* m);
+    int makeContours(WebcamImage* m);
     void myDrawContours(WebcamImage *m);
 };
 

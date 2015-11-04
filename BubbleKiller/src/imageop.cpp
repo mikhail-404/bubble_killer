@@ -25,13 +25,13 @@ void printText(Mat src, string text){
 void ImageOp::calculatePalmColor(WebcamImage* m) {
     m->cap >> m->src;
     flip(m->src,m->src,1);
-    roi.push_back(BorderedRect(Point(m->src.cols/3, m->src.rows/6),Point(m->src.cols/3+square_len,m->src.rows/6+square_len),m->src));
-    roi.push_back(BorderedRect(Point(m->src.cols/4, m->src.rows/2),Point(m->src.cols/4+square_len,m->src.rows/2+square_len),m->src));
-    roi.push_back(BorderedRect(Point(m->src.cols/3, m->src.rows/1.5),Point(m->src.cols/3+square_len,m->src.rows/1.5+square_len),m->src));
-    roi.push_back(BorderedRect(Point(m->src.cols/2, m->src.rows/2),Point(m->src.cols/2+square_len,m->src.rows/2+square_len),m->src));
-    roi.push_back(BorderedRect(Point(m->src.cols/2.5, m->src.rows/2.5),Point(m->src.cols/2.5+square_len,m->src.rows/2.5+square_len),m->src));
-    roi.push_back(BorderedRect(Point(m->src.cols/2, m->src.rows/1.5),Point(m->src.cols/2+square_len,m->src.rows/1.5+square_len),m->src));
-    roi.push_back(BorderedRect(Point(m->src.cols/2.5, m->src.rows/1.8),Point(m->src.cols/2.5+square_len,m->src.rows/1.8+square_len),m->src));
+    roi.push_back(BorderedRect(Point(m->src.cols/3, m->src.rows/6),Point(m->src.cols/3+square_len, m->src.rows/6+square_len), m->src));
+    roi.push_back(BorderedRect(Point(m->src.cols/4, m->src.rows/2),Point(m->src.cols/4+square_len, m->src.rows/2+square_len), m->src));
+    roi.push_back(BorderedRect(Point(m->src.cols/3, m->src.rows/1.5),Point(m->src.cols/3+square_len, m->src.rows/1.5+square_len), m->src));
+    roi.push_back(BorderedRect(Point(m->src.cols/2, m->src.rows/2),Point(m->src.cols/2+square_len, m->src.rows/2+square_len), m->src));
+    roi.push_back(BorderedRect(Point(m->src.cols/2.5, m->src.rows/2.5),Point(m->src.cols/2.5+square_len, m->src.rows/2.5+square_len), m->src));
+    roi.push_back(BorderedRect(Point(m->src.cols/2, m->src.rows/1.5),Point(m->src.cols/2+square_len, m->src.rows/1.5+square_len), m->src));
+    roi.push_back(BorderedRect(Point(m->src.cols/2.5, m->src.rows/1.8),Point(m->src.cols/2.5+square_len, m->src.rows/1.8+square_len), m->src));
 
     for(int i = 0;i < 50;i++) {
         m->cap >> m->src;

@@ -31,11 +31,13 @@ SOURCES += \
     src/hand_detector.cpp \
     src/webcam_image.cpp \
     src/imageop.cpp \
-    src/rect.cpp
+    src/rect.cpp \
+    src/cascade_detector.cpp
 
 HEADERS += \
     include/balloons_generator.hpp \
     include/hand_detector.hpp \
     include/webcam_image.hpp \
     include/imageop.hpp \
-    include/rect.hpp
+    include/rect.hpp \
+    include/cascade_detector.hpp

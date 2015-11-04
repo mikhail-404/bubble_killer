@@ -11,6 +11,9 @@ BalloonsGenerator::BalloonsGenerator(int width, int height)
     m_idx = 0;
 }
 
+// danger *** warning
+//     |
+//     V
 Balloon* BalloonsGenerator::next_balloon()
 {
     // sin coef: 1..10

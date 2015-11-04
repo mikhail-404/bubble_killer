@@ -66,7 +66,7 @@ void Game::printScores(const cv::Mat& src)
     int lineChange = 30;
     int fontFace = FONT_HERSHEY_PLAIN;
     int thickness = 2;
-    for (int i = 0; i < m_scores.size(); i++)
+    for(size_t i = 0; i < m_scores.size(); i++)
     {
         string info = toString(m_scores[i]);
         putText(src, info, Point(ypos,xpos), fontFace, fontSize, fColor, thickness);
@@ -91,6 +91,7 @@ void Game::start_game()
     namedWindow("Bubbles", CV_WINDOW_FULLSCREEN);
     imageUtils.calculatePalmColor(&m);
     //
+    std::vector <Balloon*> balloons_insert_vector;
 
     while (true)
     {
@@ -121,23 +122,36 @@ void Game::start_game()
                 //
                 delete b;
                 it = next_iter;
-                m_balloons.push_back(m_generator->next_balloon());
+                balloons_insert_vector = m_generator->next_n_balloons(2);
+                m_balloons.insert(m_balloons.end(), balloons_insert_vector.begin(), balloons_insert_vector.end());
                 continue;
             }
             // get color of balloon (bomb type or another)
             auto c = b->color();
             cv::circle(m.src, cv::Point(b->x() + 10 * std::sin(b->y() * 0.1), b->y()), b->radius(), cv::Scalar(std::get<0>(c), std::get<1>(c), std::get<2>(c)), 2, cv::LINE_8);
-            // sift up
             b->next_position();
+            // sift up
             // check overflow
-            b->check_position(y);
+            if (!b->check_position(y))
+            {
+                // remove b objec
+                auto next_iter = it;
+                ++next_iter;
+                m_balloons.erase(it);
+                delete b;
+                m_balloons.push_back(m_generator->next_balloon());
+            }
             ++it;
         }
+        m_generator->increase_balloon_speed();
         printScores(m.src);
         cv::imshow("Bubbles", m.src);
-        cv::waitKey(10);
+        cv::waitKey(1);
     }
 
     destroyAllWindows();
     m.cap.release();
+
+    for(Balloon* b : balloons_insert_vector)
+        delete b;
 }

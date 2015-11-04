@@ -21,6 +21,8 @@ struct User {
 class Game
 {
 public:
+    const int width = 640;
+    const int height = 480;
     Game(int balloon_counts);
     ~Game();
     void start_game();

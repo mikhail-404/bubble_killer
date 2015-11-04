@@ -7,7 +7,7 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/core.hpp>
 #include "webcam_image.hpp"
-#include "imageop.hpp"
+#include "image_utils.hpp"
 
 using namespace cv;
 using namespace std;
@@ -19,54 +19,21 @@ struct DetectorResult {
 
 class HandDetector {
 public:
-    HandDetector(WebcamImage* m, ImageOp *op);
-    DetectorResult updateFrame();
-    void showWindows();
-    DetectorResult getResult(vector<Point> contour);
+    HandDetector(WebcamImage* m, ImageUtils *imageUtils);
+    DetectorResult processFrame();
 
 private:
     WebcamImage *m;
-    ImageOp *op;
-    vector<vector<Point> > contours;
-    vector<vector<int> >hullI;
-    vector<vector<Point> >hullP;
-    vector<vector<Vec4i> > defects;
-    vector <Point> fingerTips;
-    Rect rect;
-    void printGestureInfo(Mat src);
-    int cIdx;
+    ImageUtils *imageUtils;
     int frameNumber;
-    int mostFrequentFingerNumber;
-    int nrOfDefects;
-    Rect bRect;
-    bool isHand;
-    bool detectIfHand();
-    void initVectors();
-    void getFingerNumber();
-    void eleminateDefects(WebcamImage* m);
-    void getFingerTips(WebcamImage* m);
-    void drawFingerTips(WebcamImage* m);
-    int findBiggestContour();
+    vector<vector<Point> > contours;
 
-    string bool2string(bool tf);
-    int fontFace;
-    int prevNrFingerTips;
-    void checkForOneFinger(WebcamImage* m);
-    float getAngle(Point s,Point f,Point e);
-    vector<int> fingerNumbers;
-    string intToString(int number);
-    void computeFingerNumber();
-    void drawNewNumber(WebcamImage* m);
-    vector<int> numbers2Display;
-    void addFingerNumberToVector();
-    Scalar numberColor;
-    int nrNoFinger;
-    float distanceP2P(Point a,Point b);
-    Point getMaxPoint(vector<Point> contour);
-    void removeRedundantEndPoints(vector<Vec4i> newDefects);
-    void removeRedundantFingerTips();
-    int makeContours(WebcamImage* m);
-    void myDrawContours(WebcamImage *m);
+    void analyseContours();
+    int findBiggestContour();
+    DetectorResult getResult(vector<Point> contour);
+    Point getHighestPoint(vector<Point> contour);
+    void showBinarized();
+    void showContour(int index);
 };
 
 #endif

@@ -13,12 +13,13 @@
 #include "webcam_image.hpp"
 #include "rect.hpp"
 #include "hand_detector.hpp"
-#include "imageop.hpp"
+#include "cascade_detector.hpp"
+#include "image_utils.hpp"
 
 Game::Game(int balloon_counts)
     : m_balloon_count(balloon_counts)
 {
-    m_generator = new BalloonsGenerator(640, 480);
+    m_generator = new BalloonsGenerator(width, height);
 
     for(int i = 0; i < m_balloon_count; ++i)
     {
@@ -72,12 +73,12 @@ void Game::printScores(const cv::Mat& src) {
 
 void Game::start_game()
 {
-    WebcamImage m(1);
+    WebcamImage m(1, width, height);
     m.cap >> m.src;
     cv::Size size = m.src.size();
     int y = size.height;
-    ImageOp op;
-    HandDetector detector(&m, &op);
+    ImageUtils imageUtils;
+    HandDetector detector(&m, &imageUtils);
     User user{1, 0};
     std::vector<User>(scores);
     scores.push_back(user);
@@ -85,7 +86,7 @@ void Game::start_game()
 
     //out.open("out.avi", CV_FOURCC('M', 'J', 'P', 'G'), 15, m.src.size(), true);
     namedWindow("Bubbles", CV_WINDOW_FULLSCREEN);
-    op.calculatePalmColor(&m);
+    imageUtils.calculatePalmColor(&m);
     //
 
     while (true)
@@ -93,11 +94,10 @@ void Game::start_game()
         //std::this_thread::sleep_for(std::chrono::milliseconds(100));
         //temp = m_frame.clone();
         ///
-        DetectorResult result = detector.updateFrame();
+        DetectorResult result = detector.processFrame();
         //cout << result.recognized << " " << result.pos << endl;
         cv::Point finger_pos = result.pos;
         //cout << result.pos << endl;
-        //
 
         for(auto it = m_balloons.begin(); it != m_balloons.end(); )
         {

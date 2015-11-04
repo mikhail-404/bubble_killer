@@ -8,13 +8,17 @@ using namespace cv;
 
 class BorderedRect {
 public:
+    Mat rect;
+
     BorderedRect();
-    BorderedRect(Point upper_corner, Point lower_corner,Mat src);
-    Point upper_corner, lower_corner;
-    Mat roi_ptr;
-    Scalar color;
-    int border_thickness;
+
+    BorderedRect(Point upperCorner, Point lowerCorner,Mat src);
+
     void draw_rectangle(Mat src);
+private:
+    Point upperCorner, lowerCorner;
+    int border_thickness;
+    Scalar color;
 };
 
 #endif

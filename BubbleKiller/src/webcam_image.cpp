@@ -9,13 +9,9 @@
 
 using namespace cv;
 
-WebcamImage::WebcamImage() {
-    cameraSrc = 0;
-    cap = VideoCapture(cameraSrc);
-}
-
-WebcamImage::WebcamImage(int webCamera) {
-	cameraSrc=webCamera;
-	cap=VideoCapture(webCamera);
+WebcamImage::WebcamImage(int camera, int width, int height) {
+    cap = VideoCapture(camera);
+    cap.set(CV_CAP_PROP_FRAME_WIDTH, width);
+    cap.set(CV_CAP_PROP_FRAME_HEIGHT, height);
 }
 

@@ -10,15 +10,12 @@ using namespace std;
 
 class WebcamImage {
 public:
-    WebcamImage(int webCamera);
-    WebcamImage();
+    WebcamImage(int webCamera, int width, int height);
     Mat srcLR;
     Mat src;
     Mat bw;
     vector<Mat> bwList;
     VideoCapture cap;
-    int cameraSrc;
-    void initWebCamera(int i);
 };
 
 #endif

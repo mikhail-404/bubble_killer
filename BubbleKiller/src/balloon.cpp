@@ -28,6 +28,11 @@ const Position Balloon::position() const
     return m_center_point;
 }
 
+int Balloon::id()
+{
+    return m_id;
+}
+
 void Balloon::next_position()
 {
     m_center_point.second -= m_speed;

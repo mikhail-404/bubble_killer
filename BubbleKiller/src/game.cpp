@@ -14,7 +14,6 @@
 #include "webcam_image.hpp"
 #include "rect.hpp"
 #include "hand_detector.hpp"
-#include "cascade_detector.hpp"
 #include "image_utils.hpp"
 
 Game::Game(int balloon_counts)
@@ -74,6 +73,14 @@ void Game::printScores(const cv::Mat& src)
     }
 }
 
+string balloonName(int i) {
+    stringstream ss;
+    ss << "images/balloon";
+    ss << i;
+    ss << ".png";
+    return ss.str();
+}
+
 void Game::start_game()
 {
     WebcamImage m(0, width, height);
@@ -86,6 +93,14 @@ void Game::start_game()
     std::vector<User>(scores);
     scores.push_back(user);
     setScores(scores);
+
+    int numBalloons = 5;
+    Mat balloonImages[numBalloons];
+    for (int i = 0; i < numBalloons; i++) {
+       balloonImages[i] = imread(balloonName(i), -1);
+    }
+    Mat bombImage = imread("images/bomb.png", -1);
+    Mat resizedBalloon;
 
     //out.open("out.avi", CV_FOURCC('M', 'J', 'P', 'G'), 15, m.src.size(), true);
     namedWindow("Bubbles", CV_WINDOW_FULLSCREEN);
@@ -128,7 +143,19 @@ void Game::start_game()
             }
             // get color of balloon (bomb type or another)
             auto c = b->color();
-            cv::circle(m.src, cv::Point(b->x() + 10 * std::sin(b->y() * 0.1), b->y()), b->radius(), cv::Scalar(std::get<0>(c), std::get<1>(c), std::get<2>(c)), 2, cv::LINE_8);
+            Point center = cv::Point(b->x() + 10 * std::sin(b->y() * 0.1), b->y());
+            Point corner = Point(center.x - b->radius(), center.y - b->radius());
+            Size size = Size2i(3 * b->radius(), 3 * b->radius());
+            if (b->balloon_type() == Balloon::BOMB) {
+                resize(bombImage, resizedBalloon, size);
+            } else {
+                int i = b->id() % numBalloons;
+                resize(balloonImages[i], resizedBalloon, size);
+            }
+
+            /*cv::circle(m.src, center, b->radius(),
+                       cv::Scalar(std::get<0>(c), std::get<1>(c), std::get<2>(c)), 2, cv::LINE_8);*/
+            imageUtils.overlayImage(m.src, resizedBalloon, corner);
             b->next_position();
             // sift up
             // check overflow

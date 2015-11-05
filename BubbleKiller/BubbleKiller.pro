@@ -35,7 +35,6 @@ SOURCES += \
     src/hand_detector.cpp \
     src/webcam_image.cpp \
     src/rect.cpp \
-    src/cascade_detector.cpp \
     src/image_utils.cpp
 
 HEADERS += \
@@ -45,5 +44,7 @@ HEADERS += \
     include/game.hpp \
     include/webcam_image.hpp \
     include/rect.hpp \
-    include/cascade_detector.hpp \
     include/image_utils.hpp
+
+RESOURCES += \
+    images.qrc

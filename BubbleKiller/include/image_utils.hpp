@@ -8,7 +8,7 @@
 #include "webcam_image.hpp"
 #include "rect.hpp"
 
-const int SAMPLES = 7;
+const int SAMPLES = 3;
 
 class ImageUtils
 {
@@ -16,6 +16,7 @@ public:
     ImageUtils();
     void calculatePalmColor(WebcamImage* m);
     void processImage(WebcamImage* m);
+    void overlayImage(const Mat &background, const Mat &foreground, Point2i location);
 
 private:
     int lowerBound[3];
@@ -29,7 +30,6 @@ private:
     void produceBinaries(WebcamImage *m);
     int  getMedian(vector<int> val);
     void computeAverage(WebcamImage *m);
-    void hsv2Bgr(int hsv[3], int bgr[3], Mat src);
     void initTrackbars();
 };
 

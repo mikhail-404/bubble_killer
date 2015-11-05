@@ -83,7 +83,7 @@ string balloonName(int i) {
 
 void Game::start_game()
 {
-    WebcamImage m(0, width, height);
+    WebcamImage m(1, width, height);
     m.cap >> m.src;
     cv::Size size = m.src.size();
     int y = size.height;
@@ -97,9 +97,11 @@ void Game::start_game()
     int numBalloons = 5;
     Mat balloonImages[numBalloons];
     for (int i = 0; i < numBalloons; i++) {
-       balloonImages[i] = imread(balloonName(i), -1);
+        balloonImages[i] = imread(balloonName(i), -1);
     }
     Mat bombImage = imread("images/bomb.png", -1);
+    Mat bombExplosion = imread("images/bomb_explosion.png", -1);
+    Mat balloonExplosion = imread("images/balloon_explosion.png", -1);
     Mat resizedBalloon;
 
     //out.open("out.avi", CV_FOURCC('M', 'J', 'P', 'G'), 15, m.src.size(), true);
@@ -120,11 +122,17 @@ void Game::start_game()
             if (distance(finger_pos, p) <= b->radius())
             {
                 int radius = b->radius() * 1.5;
-                while (radius)
-                {
-                    cv::circle(m.src, cv::Point(b->x() + 2. * std::sin(b->y() * 2.), b->y()), radius, cv::Scalar(0, 0, 255), 1, cv::LINE_AA);
-                    radius >>= 1;
+
+                Point center = cv::Point(b->x() + 10 * std::sin(b->y() * 0.1), b->y());
+                Point corner = Point(center.x - radius, center.y - radius);
+                Size size = Size2i(3 * radius, 3 * radius);
+                if (b->balloon_type() == Balloon::BOMB) {
+                    resize(bombExplosion, resizedBalloon, size);
+                } else {
+                    resize(balloonExplosion, resizedBalloon, size);
                 }
+                imageUtils.overlayImage(m.src, resizedBalloon, corner);
+
                 auto next_iter = it;
                 ++next_iter;
                 m_balloons.erase(it);
@@ -152,9 +160,6 @@ void Game::start_game()
                 int i = b->id() % numBalloons;
                 resize(balloonImages[i], resizedBalloon, size);
             }
-
-            /*cv::circle(m.src, center, b->radius(),
-                       cv::Scalar(std::get<0>(c), std::get<1>(c), std::get<2>(c)), 2, cv::LINE_8);*/
             imageUtils.overlayImage(m.src, resizedBalloon, corner);
             b->next_position();
             // sift up

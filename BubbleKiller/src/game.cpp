@@ -142,7 +142,8 @@ void Game::start_game()
                 delete b;
                 m_balloons.push_back(m_generator->next_balloon());
             }
-            ++it;
+            else
+                ++it;
         }
         m_generator->increase_balloon_speed();
         printScores(m.src);

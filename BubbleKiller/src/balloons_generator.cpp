@@ -33,7 +33,7 @@ Balloon* BalloonsGenerator::next_balloon()
 
 void BalloonsGenerator::increase_balloon_speed()
 {
-    m_speed += 0.002;
+    m_speed += 0.0015;
 }
 
 std::vector<Balloon*> BalloonsGenerator::next_n_balloons(const int count)

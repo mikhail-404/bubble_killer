@@ -83,7 +83,7 @@ string balloonName(int i) {
 
 void Game::start_game()
 {
-    WebcamImage m(1, width, height);
+    WebcamImage m(0, width, height);
     m.cap >> m.src;
     cv::Size size = m.src.size();
     int y = size.height;

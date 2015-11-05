@@ -21,7 +21,7 @@ public:
     //
     int radius() const;
     //
-    bool check_position(const int &pos);
+    bool check_position();
     //
     int x() const;
     //

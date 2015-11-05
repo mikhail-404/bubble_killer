@@ -121,7 +121,7 @@ void Game::start_game()
                 //
                 delete b;
                 it = next_iter;
-                balloons_insert_vector = m_generator->next_n_balloons(2);
+                balloons_insert_vector = m_generator->next_n_balloons(1);
                 m_balloons.insert(m_balloons.end(), balloons_insert_vector.begin(), balloons_insert_vector.end());
                 continue;
             }
@@ -131,7 +131,7 @@ void Game::start_game()
             b->next_position();
             // sift up
             // check overflow
-            if (!b->check_position(y))
+            if (!b->check_position())
             {
                 // remove b objec
                 auto next_iter = it;

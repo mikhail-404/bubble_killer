@@ -138,6 +138,7 @@ void Game::start_game()
                 auto next_iter = it;
                 ++next_iter;
                 m_balloons.erase(it);
+                it = next_iter;
                 delete b;
                 m_balloons.push_back(m_generator->next_balloon());
             }

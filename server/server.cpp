@@ -173,6 +173,7 @@ void server::slotLeaveUser()
     if (m_users_db.num_users() == 0)
     {
         m_timer_balloons->stop();
+        m_gen.reset_speed();
     }
 }
 

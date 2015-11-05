@@ -10,6 +10,7 @@ public:
     BalloonsGenerator(int width, int geight);
     Balloon next_balloon();
     void increase_balloon_speed();
+    void reset_speed();
 
 private:
     int m_width;

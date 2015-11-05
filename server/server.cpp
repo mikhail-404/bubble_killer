@@ -112,6 +112,7 @@ void server::slotNewUser()
 void server::slotValidateBal()
 {
     bool change = false;
+    int num_bal = 0;
     for (auto iter = m_balloons.begin(); iter != m_balloons.end();)
     {
         iter->next_position();
@@ -123,9 +124,9 @@ void server::slotValidateBal()
             std::cout << "Timer: delete balloon, id " << iter->get_id() << std::endl;
             m_balloons.erase(iter);
             iter = next_iter;
-            get_balloons(1);
 
             change = true;
+            ++num_bal;
         }
         else
         {
@@ -134,6 +135,7 @@ void server::slotValidateBal()
     }
     if (change == true)
     {
+        get_balloons(num_bal);
         update(true);
     }
 }

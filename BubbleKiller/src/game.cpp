@@ -132,7 +132,7 @@ void Game::start_game()
             b->next_position();
             // sift up
             // check overflow
-            if (!b->check_position(y))
+            if (!b->check_position())
             {
                 // remove b objec
                 auto next_iter = it;

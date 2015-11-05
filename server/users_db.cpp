@@ -64,3 +64,8 @@ void users_db::set_score(QTcpSocket* user_soket, int s)
 {
     m_users.at(user_soket).score += s;
 }
+
+int users_db::num_users()
+{
+    m_users.size();
+}

@@ -16,13 +16,24 @@ server::server()
 
     connect(m_server, SIGNAL(newConnection()), this, SLOT(slotNewUser()));
 
+    m_timer_balloons = new QTimer();
+    connect(m_timer_balloons, SIGNAL(timeout()), this, SLOT(slotValidateBal()));
+    m_timer_balloons->setInterval(TIME);
+
     std::cout << "Server started" << std::endl;
 
     get_balloons(20);
 }
+server::~server()
+{
+    delete m_server;
+    delete m_timer_balloons;
+}
 
 void server::get_balloons(int num_ballooons)
 {
+    m_gen.increase_balloon_speed();
+
     for (int i = 0; i < num_ballooons; ++i)
     {
         m_balloons.push_back(m_gen.next_balloon());
@@ -45,6 +56,7 @@ void server::delete_balloon(int balloon_id, QTcpSocket *socket)
             }
 
             m_balloons.erase(it);
+            std::cout << "Delete balloon, id: " << balloon_id << std::endl;
             break;
         }
     }
@@ -93,6 +105,37 @@ void server::slotNewUser()
     sendToClient(socket, id);
 
     update(true);
+
+    m_timer_balloons->start();
+}
+
+void server::slotValidateBal()
+{
+    bool change = false;
+    for (auto iter = m_balloons.begin(); iter != m_balloons.end();)
+    {
+        iter->next_position();
+
+        if (!iter->check_position())
+        {
+            auto next_iter = iter;
+            ++next_iter;
+            std::cout << "Timer: delete balloon, id " << iter->get_id() << std::endl;
+            m_balloons.erase(iter);
+            iter = next_iter;
+            get_balloons(1);
+
+            change = true;
+        }
+        else
+        {
+            ++iter;
+        }
+    }
+    if (change == true)
+    {
+        update(true);
+    }
 }
 
 void server::sendToAllClient(const QByteArray &data)
@@ -132,17 +175,16 @@ void server::slotReadClient()
 
     while (socket->bytesAvailable())
     {
-        int size = m_balloons.size(); //я пытался
+        int size = m_balloons.size();
         QDataStream in(socket);
         int balloon_id = 0;
         in >> balloon_id;
         delete_balloon(balloon_id, socket);
         if (m_balloons.size() < size)
+        {
             get_balloons(1);
-
-        std::cout << "Delete balloon, id: " << balloon_id << std::endl;
-
-        update(true);
+            update(true);
+        }
     }
 }
 

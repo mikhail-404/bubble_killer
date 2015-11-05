@@ -7,6 +7,12 @@ CONFIG -= app_bundle
 CONFIG += c++11
 CONFIG += -Wno-sign-compare
 
+CONFIG(release, debug|release) {
+    DESTDIR = release
+} else {
+    DESTDIR = debug
+}
+
 TEMPLATE = app
 
 INCLUDEPATH += ./include
@@ -46,5 +52,10 @@ HEADERS += \
     include/rect.hpp \
     include/image_utils.hpp
 
+copyfiles.commands = cp -r ../$${TARGET}/images $${DESTDIR}/
+
 RESOURCES += \
     images.qrc
+
+QMAKE_EXTRA_TARGETS += copyfiles
+POST_TARGETDEPS += copyfiles

@@ -9,7 +9,8 @@
 
 using namespace cv;
 
-class CascadeDetector {
+class CascadeDetector
+{
 public:
     CascadeDetector();
     void detectAndDraw(Mat& image);

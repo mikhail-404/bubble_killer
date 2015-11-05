@@ -13,16 +13,13 @@ QDataStream &operator>>(QDataStream &stream, Balloon &bal)
     stream >> bal.m_id;
     stream >> x;
     stream >> y;
-//    bal.m_start_position = make_pair(x, y);
-
+    bal.m_start_position = Position(x, y);
     stream >> bal.m_coefficient;
     stream >> bal.m_speed;
     stream >> bal.m_radius;
-
     stream >> x;
     stream >> y;
-    bal.m_center_point = make_pair(x, y);
-
+    bal.m_center_point = Position(x, y);
     stream >> type;
     bal.m_balloon_type = type == 0 ? Balloon::BOMB : Balloon::NORMAL;
 
@@ -30,7 +27,7 @@ QDataStream &operator>>(QDataStream &stream, Balloon &bal)
     stream >> y;
     stream >> z;
 
-    bal.m_color = make_tuple(x, y, z);
+    bal.m_color = std::make_tuple(x, y, z);
 
     return stream;
 }
@@ -38,8 +35,8 @@ QDataStream &operator>>(QDataStream &stream, Balloon &bal)
 QDataStream &operator<<(QDataStream &stream, const Balloon &bal)
 {
     stream << bal.m_id;
-//    stream << bal.m_start_position.first;
-//    stream << bal.m_start_position.second;
+    stream << bal.m_start_position.first;
+    stream << bal.m_start_position.second;
     stream << bal.m_coefficient;
     stream << bal.m_speed;
     stream << bal.m_radius;
@@ -53,7 +50,7 @@ QDataStream &operator<<(QDataStream &stream, const Balloon &bal)
     return stream;
 }
 
-QDataStream &operator>>(QDataStream &stream, user &us)
+QDataStream &operator>>(QDataStream &stream, User &us)
 {
     stream >> us.user_id;
     stream >> us.score;
@@ -61,7 +58,7 @@ QDataStream &operator>>(QDataStream &stream, user &us)
     return stream;
 }
 
-QDataStream &operator<<(QDataStream &stream, const user &us)
+QDataStream &operator<<(QDataStream &stream, const User &us)
 {
     stream << us.user_id;
     stream << us.score;
@@ -69,7 +66,7 @@ QDataStream &operator<<(QDataStream &stream, const user &us)
     return stream;
 }
 
-QDataStream &operator>>(QDataStream &stream, std::vector<user> &users)
+QDataStream &operator>>(QDataStream &stream, std::vector<User> &users)
 {
     int size = 0;
 
@@ -84,7 +81,7 @@ QDataStream &operator>>(QDataStream &stream, std::vector<user> &users)
     return stream;
 }
 
-QDataStream &operator<<(QDataStream &stream, const std::vector<user> &users)
+QDataStream &operator<<(QDataStream &stream, const std::vector<User> &users)
 {
     int size = users.size();
     stream << (int)CMD_USER;

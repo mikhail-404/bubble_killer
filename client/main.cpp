@@ -9,10 +9,12 @@
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
-    Game game(5);
-    game.start_game();
+//    Game game(5);
+//    game.start_game();
 
 //    client c("localhost");
+
+    client c("10.42.0.1");
 
     return a.exec();
 }

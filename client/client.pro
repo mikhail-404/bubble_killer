@@ -10,7 +10,6 @@ TEMPLATE = app
 
 INCLUDEPATH += /usr/local/include/opencv
 
-
 LIBS += -L/usr/local/lib \
 -lopencv_core \
 -lopencv_imgproc \
@@ -23,7 +22,6 @@ LIBS += -L/usr/local/lib \
 -lopencv_calib3d \
 -lopencv_objdetect \
 -lopencv_flann \
-
 
 SOURCES += main.cpp \
     client.cpp \
@@ -49,3 +47,10 @@ HEADERS += \
     rect.hpp \
     webcam_image.hpp
 
+copyfiles.commands = cp -r ../images .
+
+RESOURCES += \
+    images.qrc
+
+QMAKE_EXTRA_TARGETS += copyfiles
+POST_TARGETDEPS += copyfiles

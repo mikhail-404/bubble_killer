@@ -13,29 +13,36 @@
 #include "balloons_generator.hpp"
 #include "balloon.hpp"
 
-struct User {
-    int id;
-    int score;
-};
+#include <QTcpSocket>
+#include "serialization.hpp"
+#include <string>
 
 class Game
 {
 public:
     const int width = 640;
     const int height = 480;
-    Game(int balloon_counts);
+
+    Game(int balloon_counts, QTcpSocket *tcpcoket, int id_user);
     ~Game();
     void start_game();
     void printScores(const cv::Mat &src);
     void setScores(std::vector<User>& scores);
     void updateBalloons(std::vector<Balloon> &balloons);
+    void set_id(int id);
 
 private:
     cv::Mat                m_frame;
     int                    m_balloon_count;
-    std::list <Balloon*>   m_balloons;
+    std::vector <Balloon*> m_balloons;
     BalloonsGenerator      *m_generator;
     std::vector<User>      m_scores;
+    int                   my_id;
+
+    QTcpSocket *tcp;
+
+private:
+    std::string toString(User user);
 };
 
 #endif // GAME_HPP

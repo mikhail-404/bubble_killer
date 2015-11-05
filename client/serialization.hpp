@@ -5,7 +5,8 @@
 #include <vector>
 
 #include "balloon.hpp"
-struct user
+
+struct User
 {
     int user_id;
     int score;
@@ -17,14 +18,14 @@ struct user
 
 
 QDataStream &operator>>(QDataStream &stream, Balloon &bal);
-QDataStream &operator>>(QDataStream &stream, user &us);
-QDataStream &operator>>(QDataStream &stream, std::vector<user> &users);
+QDataStream &operator>>(QDataStream &stream, User &us);
+QDataStream &operator>>(QDataStream &stream, std::vector<User> &users);
 QDataStream &operator>>(QDataStream &stream, std::vector<Balloon> &balloons);
 
 
 QDataStream &operator<<(QDataStream &stream, const Balloon &bal);
-QDataStream &operator<<(QDataStream &stream, const user &us);
-QDataStream &operator<<(QDataStream &stream, const std::vector<user> &users);
+QDataStream &operator<<(QDataStream &stream, const User &us);
+QDataStream &operator<<(QDataStream &stream, const std::vector<User> &users);
 QDataStream &operator<<(QDataStream &stream, const std::vector<Balloon> &balloons);
 
 

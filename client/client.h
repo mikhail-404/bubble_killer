@@ -30,7 +30,7 @@ private:
     QTcpSocket* m_pTcpSocket;
 
     vector<Balloon> balons;
-    vector<user> users;
+    vector<User> users;
 
     int u_id;
 

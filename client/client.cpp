@@ -9,31 +9,27 @@ client::client(QString host)
     m_pTcpSocket = new QTcpSocket(this);
     m_pTcpSocket->connectToHost(host, nPort);
 
-    //    m_pTcpSocket->connectToHost("10.42.0.1", nPort);
-
     connect(m_pTcpSocket, SIGNAL(connected()), SLOT(slotConnected()));
     connect(m_pTcpSocket, SIGNAL(readyRead()), this, SLOT(slotReadyRead()));
     connect(m_pTcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(slotError()));
 
     game = NULL;
-//    game = new Game(15);
-//    game->start_game();
 }
 
-client::~client() {
+client::~client()
+{
     m_pTcpSocket->close();
     delete[] m_pTcpSocket;
 
-    if (game != NULL) {
+    if (game != NULL)
         delete[] game;
-    }
 }
 
 void client::slotConnected()
 {
     cout << "connected" << endl;
 
-    game = new Game(5);
+    game = new Game(5, m_pTcpSocket, -1);
     game->start_game();
 }
 
@@ -47,7 +43,8 @@ void client::slotReadyRead()
     QTcpSocket *tcpClt =   (QTcpSocket *) sender();
     QDataStream stream(tcpClt);
 
-    while (tcpClt->bytesAvailable()) {
+    while (tcpClt->bytesAvailable())
+    {
         int type = 0;
         stream >> type;
 
@@ -65,6 +62,8 @@ void client::slotReadyRead()
             case CMD_SEND_U_ID: {
 //                cout << "CMD_SEND_U_ID" << endl;
                 stream >> u_id;
+
+                cout << "my_id: " << u_id << endl;
                 break;
             }
 
@@ -72,4 +71,8 @@ void client::slotReadyRead()
                 break;
         }
     }
+
+    game->updateBalloons(balons);
+    game->setScores(users);
+    game->set_id(u_id);
 }

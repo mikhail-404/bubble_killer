@@ -169,6 +169,11 @@ void server::slotLeaveUser()
     out_users << us_vec;
 
     sendToAllClient(users);
+
+    if (m_users_db.num_users() == 0)
+    {
+        m_timer_balloons->stop();
+    }
 }
 
 void server::slotReadClient()

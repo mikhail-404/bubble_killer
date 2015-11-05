@@ -29,6 +29,7 @@ public:
     void get_users_vector(std::vector<user> &users_vec);
     void get_all_sockets(std::vector<QTcpSocket*> &soc_vector);
     void set_score(QTcpSocket* user_soket, int s);
+    int num_users();
 
 private:
     std::map<QTcpSocket*, user> m_users;

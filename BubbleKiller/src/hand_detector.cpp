@@ -21,17 +21,41 @@ HandDetector::HandDetector(WebcamImage* m, ImageUtils *op) :
 
 DetectorResult HandDetector::processFrame() {
     frameNumber++;
+    prevFrame = m->src.clone();
     m->cap >> m->src;
+    flip(m->src, m->src,1);
+
+    absdiff(m->src, prevFrame, movementImage);
+
+    cv::cvtColor(movementImage, movementGray, CV_BGR2GRAY);
+    medianBlur(movementImage, movementImage, 3);
+
+    DetectorResult result;
     imageUtils->processImage(m);
     analyseContours();
-    DetectorResult result;
     int biggestContour = findBiggestContour();
     if (biggestContour != -1) {
         result = getResult(contours[biggestContour]);
         //showContour(biggestContour);
     }
-    //showBinarized();
+    showBinarized();
     return result;
+}
+
+bool HandDetector::checkBalloon(int centerX, int centerY, int radius) {
+    int movement = 0;
+    for(int y = centerY - radius; y < centerY + radius; y++) {
+        for(int x = centerX - radius; x < centerX + radius; x++) {
+            if (x < m->src.cols && x > 0 && y < m->src.rows && y > 0) {
+                int intensity = (int) movementGray.at<uchar>(y, x);
+                if (intensity > 127) {
+                    movement++;
+                }
+            }
+        }
+    }
+    //imshow("movement", movementGray);
+    return (movement > 5);
 }
 
 void HandDetector::showBinarized() {

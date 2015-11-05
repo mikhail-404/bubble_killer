@@ -21,11 +21,13 @@ class HandDetector {
 public:
     HandDetector(WebcamImage* m, ImageUtils *imageUtils);
     DetectorResult processFrame();
+    bool checkBalloon(int x, int y, int radius);
 
 private:
     WebcamImage *m;
     ImageUtils *imageUtils;
     int frameNumber;
+    Mat prevFrame, movementImage, movementGray;
     vector<vector<Point> > contours;
 
     void analyseContours();

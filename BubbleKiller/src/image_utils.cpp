@@ -59,6 +59,28 @@ void ImageUtils::calculatePalmColor(WebcamImage* m) {
     //initTrackbars();
 }
 
+void ImageUtils::overlayImage(const Mat &background, const Mat &foreground, Point2i location) {
+    for(int y = std::max(location.y , 0); y < background.rows; ++y) {
+        int fY = y - location.y;
+        if (fY >= foreground.rows) {
+            break;
+        }
+        for(int x = std::max(location.x, 0); x < background.cols; ++x) {
+            int fX = x - location.x;
+            if(fX >= foreground.cols) {
+                break;
+            }
+            double opacity = ((double)foreground.data[fY * foreground.step + fX * foreground.channels() + 3]) / 255.;
+            for(int c = 0; opacity > 0 && c < background.channels(); ++c) {
+                unsigned char foregroundPx = foreground.data[fY * foreground.step + fX * foreground.channels() + c];
+                unsigned char backgroundPx = background.data[y * background.step + x * background.channels() + c];
+                background.data[y*background.step + background.channels()*x + c] =
+                        backgroundPx * (1.-opacity) + foregroundPx * opacity;
+            }
+        }
+    }
+}
+
 int ImageUtils::getMedian(vector<int> val) {
     size_t size = val.size();
     sort(val.begin(), val.end());

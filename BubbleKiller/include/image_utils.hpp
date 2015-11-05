@@ -16,6 +16,7 @@ public:
     ImageUtils();
     void calculatePalmColor(WebcamImage* m);
     void processImage(WebcamImage* m);
+    void overlayImage(const Mat &background, const Mat &foreground, Point2i location);
 
 private:
     int lowerBound[3];

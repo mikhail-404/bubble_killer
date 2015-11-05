@@ -17,6 +17,8 @@ public:
     // center of balloon
     const Position position() const;
     //
+    int id();
+    //
     void next_position();
     //
     int radius() const;

@@ -45,3 +45,6 @@ HEADERS += \
     include/webcam_image.hpp \
     include/rect.hpp \
     include/image_utils.hpp
+
+RESOURCES += \
+    images.qrc

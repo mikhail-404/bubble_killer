@@ -38,7 +38,7 @@ DetectorResult HandDetector::processFrame() {
         result = getResult(contours[biggestContour]);
         //showContour(biggestContour);
     }
-    showBinarized();
+    //showBinarized();
     return result;
 }
 

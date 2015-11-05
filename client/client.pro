@@ -6,6 +6,12 @@ TARGET = client
 CONFIG += console c++11
 CONFIG -= app_bundle
 
+CONFIG(release, debug|release) {
+    DESTDIR = release
+} else {
+    DESTDIR = debug
+}
+
 TEMPLATE = app
 
 INCLUDEPATH += /usr/local/include/opencv
@@ -28,7 +34,6 @@ SOURCES += main.cpp \
     serialization.cpp \
     balloon.cpp \
     balloons_generator.cpp \
-    cascade_detector.cpp \
     game.cpp \
     hand_detector.cpp \
     image_utils.cpp \
@@ -40,14 +45,13 @@ HEADERS += \
     serialization.hpp \
     balloon.hpp \
     balloons_generator.hpp \
-    cascade_detector.hpp \
     game.hpp \
     hand_detector.hpp \
     image_utils.hpp \
     rect.hpp \
     webcam_image.hpp
 
-copyfiles.commands = cp -r ../images .
+copyfiles.commands = cp -r ../$${TARGET}/images $${DESTDIR}/
 
 RESOURCES += \
     images.qrc

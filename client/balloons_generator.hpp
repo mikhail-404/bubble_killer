@@ -7,8 +7,8 @@ class BalloonsGenerator
 {
 public:
     // win size
-    BalloonsGenerator(int width, int geight);
-    Balloon next_balloon();
+    BalloonsGenerator(int width, int height);
+    Balloon* next_balloon();
 
 private:
     int m_width;
